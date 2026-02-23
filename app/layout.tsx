@@ -5,29 +5,35 @@ import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
 
 export const metadata: Metadata = {
   title: 'Rights Issue Acceptance/Renunciation e-Form',
   description: 'Submit your rights issue acceptance or renunciation application online',
   generator: 'v0.app',
+  metadataBase: new URL(siteUrl),
   icons: {
     icon: '/apple-icon.png',
     shortcut: '/apple-icon.png',
     apple: '/apple-icon.png',
   },
   openGraph: {
+    url: '/',
+    type: 'website',
     images: [
       {
-        url: '/apple-icon.png',
-        width: 180,
-        height: 180,
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
         alt: 'Crescent Registrars Limited logo',
       },
     ],
   },
   twitter: {
-    card: 'summary',
-    images: ['/apple-icon.png'],
+    card: 'summary_large_image',
+    images: ['/opengraph-image'],
   },
 }
 
