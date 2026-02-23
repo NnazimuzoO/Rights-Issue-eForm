@@ -73,7 +73,7 @@ export default function Home() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Shareholder Button */}
             <Link href="/form/shareholder">
               <Button
@@ -85,6 +85,27 @@ export default function Home() {
                     <div className="text-lg font-bold">Shareholder Access</div>
                     <p className="text-sm text-primary-foreground/80 mt-1">
                       Submit your application
+                    </p>
+                  </div>
+                  <ArrowRight
+                    size={24}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </div>
+              </Button>
+            </Link>
+
+            {/* Stockbroker Button */}
+            <Link href="/form/stockbroker">
+              <Button
+                className="w-full h-auto flex flex-col items-start justify-start p-6 bg-purple-600 hover:bg-purple-700 text-white group"
+                size="lg"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <div>
+                    <div className="text-lg font-bold">Stockbroker Access</div>
+                    <p className="text-sm text-white/80 mt-1">
+                      Register subscribers
                     </p>
                   </div>
                   <ArrowRight
@@ -119,7 +140,7 @@ export default function Home() {
         </div>
 
         {/* Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 pt-16 border-t border-border">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-16 border-t border-border">
           {/* For Shareholders */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-primary">For Shareholders</h3>
@@ -153,6 +174,41 @@ export default function Home() {
             </ul>
           </div>
 
+          {/* For Stockbrokers */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-primary">For Stockbrokers</h3>
+            <ul className="space-y-3 text-muted-foreground">
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold mt-1">✓</span>
+                <span>
+                  Broker dashboard showing subscriber metrics and recent applications
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold mt-1">✓</span>
+                <span>
+                  Register subscriber applications on behalf of your clients
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold mt-1">✓</span>
+                <span>
+                  Upload and manage receiving agent stamps
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold mt-1">✓</span>
+                <span>Submit applications directly to registrar for approval</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-primary font-bold mt-1">✓</span>
+                <span>
+                  Track applications through registrar review and approval workflow
+                </span>
+              </li>
+            </ul>
+          </div>
+
           {/* For Registrars */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-primary">For Registrars</h3>
@@ -160,13 +216,13 @@ export default function Home() {
               <li className="flex items-start gap-3">
                 <span className="text-primary font-bold mt-1">✓</span>
                 <span>
-                  Access submitted shareholder applications with all details
+                  Access shareholder and broker-submitted applications
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-primary font-bold mt-1">✓</span>
                 <span>
-                  Complete "For Registrar Use Only" verification section
+                  Filter and review by submission source (direct or broker)
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -177,11 +233,11 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-primary font-bold mt-1">✓</span>
-                <span>Upload receiving agent stamps and verification documents</span>
+                <span>Approve or reject with audit trails and rejection reasons</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-primary font-bold mt-1">✓</span>
-                <span>Submit final application to Issuing House with audit trail</span>
+                <span>Submit final applications to Issuing House</span>
               </li>
             </ul>
           </div>

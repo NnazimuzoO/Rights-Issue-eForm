@@ -34,8 +34,10 @@ interface PrintPreviewModalProps {
     pricePerShare: number;
     amountPayable: number;
   };
-  mode?: 'shareholder' | 'registrar';
+  mode?: 'shareholder' | 'registrar' | 'broker';
   registrarData?: any;
+  source?: 'shareholder' | 'broker' | 'registrar';
+  brokerName?: string;
 }
 
 export function PrintPreviewModal({
@@ -45,6 +47,8 @@ export function PrintPreviewModal({
   ixTracData,
   mode = 'shareholder',
   registrarData,
+  source = 'shareholder',
+  brokerName,
 }: PrintPreviewModalProps) {
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -104,6 +108,11 @@ export function PrintPreviewModal({
           >
             {/* Form Header */}
             <div className="text-center border-b-2 border-black pb-6">
+              {source === 'broker' && brokerName && (
+                <p className="text-xs font-semibold mb-2 p-2 border border-black inline-block">
+                  PROCESSED VIA STOCKBROKER: {brokerName}
+                </p>
+              )}
               <h1 className="text-2xl font-bold mb-2">
                 ACCEPTANCE / RENUNCIATION FORM
               </h1>

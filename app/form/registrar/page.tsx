@@ -30,6 +30,26 @@ const mockSharedholderSubmission = {
   sharesRenounced: 0,
 };
 
+// Mock broker submission data
+const mockBrokerSubmission = {
+  id: 'BRK-APP-002',
+  shareholderName: 'Sarah Johnson',
+  brokerName: 'Premier Securities Limited',
+  nextOfKin: 'Jane Johnson',
+  daytimePhone: '+234 1 567 8901',
+  mobilePhone: '+234 802 567 8901',
+  email: 'sarah@example.com',
+  bankName: 'First Bank',
+  branch: 'Lekki',
+  accountNumber: '2345678901',
+  bvn: '98765432101',
+  acceptanceType: 'full',
+  additionalShares: 0,
+  sharesAccepted: 1000,
+  sharesRenounced: 0,
+  submittedByBroker: true,
+};
+
 const mockIxTracData = {
   regAcctNumber: 'IX-2024-001234',
   shareholderName: 'John Adeyemi Okafor',
@@ -72,31 +92,35 @@ export default function RegistrarFormPage() {
     'in-review'
   );
 
-  // Form data state (auto-populated from shareholder)
+  // Submission source filter
+  const [submissionSource, setSubmissionSource] = useState<'shareholder' | 'broker'>('shareholder');
+  const currentSubmission = submissionSource === 'shareholder' ? mockSharedholderSubmission : mockBrokerSubmission;
+
+  // Form data state (auto-populated from shareholder/broker)
   const [personalData] = useState<PersonalInfoData>(
-    mockSharedholderSubmission
+    currentSubmission as any
   );
   const [bankData] = useState<BankDetailsData>({
-    bankName: mockSharedholderSubmission.bankName,
-    branch: mockSharedholderSubmission.branch,
-    accountNumber: mockSharedholderSubmission.accountNumber,
-    bvn: mockSharedholderSubmission.bvn,
+    bankName: currentSubmission.bankName,
+    branch: currentSubmission.branch,
+    accountNumber: currentSubmission.accountNumber,
+    bvn: currentSubmission.bvn,
   });
   const [registrarData, setRegistrarData] = useState<RegistrarData>({
     sharesProvisionallyAllotted: mockIxTracData.rightsDue,
-    sharesAccepted: mockSharedholderSubmission.sharesAccepted,
-    additionalSharesApplied: mockSharedholderSubmission.additionalShares || 0,
-    sharesRenounced: mockSharedholderSubmission.sharesRenounced || 0,
+    sharesAccepted: currentSubmission.sharesAccepted,
+    additionalSharesApplied: currentSubmission.additionalShares || 0,
+    sharesRenounced: currentSubmission.sharesRenounced || 0,
     totalSharesAllotted:
-      mockSharedholderSubmission.sharesAccepted +
-      (mockSharedholderSubmission.additionalShares || 0),
+      currentSubmission.sharesAccepted +
+      (currentSubmission.additionalShares || 0),
     totalAmountPayable:
       mockIxTracData.amountPayable +
-      ((mockSharedholderSubmission.additionalShares || 0) *
+      ((currentSubmission.additionalShares || 0) *
         mockIxTracData.pricePerShare),
     totalAmountPaid:
       mockIxTracData.amountPayable +
-      ((mockSharedholderSubmission.additionalShares || 0) *
+      ((currentSubmission.additionalShares || 0) *
         mockIxTracData.pricePerShare),
     amountToBeRefunded: 0,
     bankDraftNumber: '',
@@ -177,16 +201,26 @@ export default function RegistrarFormPage() {
             <Card className="border-2 border-secondary p-6">
               <div className="flex items-start gap-4">
                 <Clock size={24} className="text-secondary flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-lg font-bold text-primary">
-                    Application Received
-                  </h3>
-                  <p className="text-muted-foreground mt-1">
-                    Reference: {mockSharedholderSubmission.id}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Submitted on: {new Date().toLocaleDateString('en-NG')}
-                  </p>
+                <div className="flex-1">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <div>
+                      <h3 className="text-lg font-bold text-primary">
+                        Application Received
+                      </h3>
+                      <p className="text-muted-foreground mt-1">
+                        Reference: {currentSubmission.id}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Submitted on: {new Date().toLocaleDateString('en-NG')}
+                      </p>
+                    </div>
+                    {submissionSource === 'broker' && (currentSubmission as any).brokerName && (
+                      <div className="bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 rounded-lg px-3 py-2">
+                        <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase">Submitted By Broker</p>
+                        <p className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{(currentSubmission as any).brokerName}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </Card>
@@ -364,6 +398,41 @@ export default function RegistrarFormPage() {
         mode="registrar"
         status={appStatus === 'completed' ? 'completed' : 'in-review'}
       />
+
+      {/* Submission Source Filter */}
+      <div className="border-b border-border bg-card">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center gap-4">
+          <span className="text-sm font-semibold text-foreground">View Application from:</span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                setSubmissionSource('shareholder');
+                setCurrentStep(0);
+              }}
+              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                submissionSource === 'shareholder'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              }`}
+            >
+              Direct Shareholder
+            </button>
+            <button
+              onClick={() => {
+                setSubmissionSource('broker');
+                setCurrentStep(0);
+              }}
+              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                submissionSource === 'broker'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              }`}
+            >
+              Stockbroker
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="border-b border-border">
         <FormStepper

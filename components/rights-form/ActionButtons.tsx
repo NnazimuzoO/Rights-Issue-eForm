@@ -6,13 +6,15 @@ import { Save, Eye, Send, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ActionButtonsProps {
-  mode: 'shareholder' | 'registrar';
-  step: number;
+  mode: 'shareholder' | 'registrar' | 'stockbroker';
+  currentStep?: number;
+  step?: number;
   totalSteps: number;
   isValid?: boolean;
   isLoading?: boolean;
   onSaveDraft?: () => void;
   onPreview?: () => void;
+  onPreviewPrint?: () => void;
   onSubmit?: () => void;
   onPrevious?: () => void;
   onNext?: () => void;
@@ -33,24 +35,28 @@ interface ActionButtonsProps {
 
 export function ActionButtons({
   mode,
+  currentStep,
   step,
   totalSteps,
   isValid = true,
   isLoading = false,
   onSaveDraft,
   onPreview,
+  onPreviewPrint,
   onSubmit,
   onPrevious,
   onNext,
-  canGoBack = step > 0,
-  canGoForward = step < totalSteps - 1,
+  canGoBack = (currentStep ?? step ?? 0) > 0,
+  canGoForward = (currentStep ?? step ?? 0) < totalSteps - 1,
   showDraftButton = true,
   showPreviewButton = true,
-  showSubmitButton = step === totalSteps - 1,
-  submitLabel = mode === 'registrar' ? 'Submit to Issuing House' : 'Submit Application',
+  showSubmitButton = (currentStep ?? step ?? 0) === totalSteps - 1,
+  submitLabel = mode === 'registrar' ? 'Submit to Issuing House' : mode === 'stockbroker' ? 'Submit to Registrar' : 'Submit Application',
   customButtons = [],
 }: ActionButtonsProps) {
-  const isLastStep = step === totalSteps - 1;
+  const activeStep = currentStep ?? step ?? 0;
+  const isLastStep = activeStep === totalSteps - 1;
+  const previewCallback = onPreviewPrint || onPreview;
 
   return (
     <div className="flex flex-col md:flex-row gap-3 justify-between items-center mt-8 pt-8 border-t border-border">
@@ -110,15 +116,15 @@ export function ActionButtons({
         )}
 
         {/* Preview button */}
-        {showPreviewButton && onPreview && (
+        {showPreviewButton && previewCallback && (
           <Button
-            onClick={onPreview}
+            onClick={previewCallback}
             disabled={!isValid || isLoading}
             variant="outline"
             aria-label="Preview and print"
           >
             <Eye size={18} className="mr-2" />
-            Preview
+            {mode === 'stockbroker' ? 'Preview/Print' : 'Preview'}
           </Button>
         )}
 
