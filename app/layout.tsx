@@ -11,21 +11,23 @@ export const metadata: Metadata = {
   description: 'Submit your rights issue acceptance or renunciation application online',
   generator: 'v0.app',
   icons: {
-    icon: [
+    icon: '/apple-icon.png',
+    shortcut: '/apple-icon.png',
+    apple: '/apple-icon.png',
+  },
+  openGraph: {
+    images: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/apple-icon.png',
+        width: 180,
+        height: 180,
+        alt: 'Crescent Registrars Limited logo',
       },
     ],
-    apple: '/apple-icon.png',
+  },
+  twitter: {
+    card: 'summary',
+    images: ['/apple-icon.png'],
   },
 }
 
